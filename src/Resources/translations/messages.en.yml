@@ -1,0 +1,20 @@
+tavy315_sylius_orders:
+    ui:
+        docs: Docs
+        document_date: Document Date
+        document_no: Document No
+        order: Order
+        orders: Orders
+        pdf: PDF
+        pics: Pics
+        product_amount: Amount
+        product_description: Name
+        product_measurement: Unit of measurement
+        product_no: No
+        product_price: Price per piece
+        product_quantity: Quantity
+        product_type: Type
+        select_customer: Select customer
+        total_amount: Total amount
+        url: PDF Url
+        your_order_list_is_empty: Your Order list is empty

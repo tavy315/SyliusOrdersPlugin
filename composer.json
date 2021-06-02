@@ -1,0 +1,16 @@
+{
+    "name": "tavy315/sylius-orders-plugin",
+    "type": "sylius-plugin",
+    "description": "Orders plugin for Sylius.",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.4",
+        "sylius/sylius": "^1.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tavy315\\SyliusOrdersPlugin\\": "src/"
+        }
+    },
+    "prefer-stable": true
+}

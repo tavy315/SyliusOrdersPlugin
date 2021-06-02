@@ -1,0 +1,23 @@
+imports:
+    - { resource: "@Tavy315SyliusOrdersPlugin/Resources/config/app/grids.yaml" }
+
+services:
+    tavy315_sylius_orders.context.order:
+        arguments:
+            - "@tavy315_sylius_orders.repository.customer_order"
+            - "@security.token_storage"
+        class: Tavy315\SyliusOrdersPlugin\Context\OrderContext
+        public: true
+
+    Tavy315\SyliusOrdersPlugin\Context\OrderContextInterface:
+        alias: tavy315_sylius_orders.context.order
+
+    tavy315_sylius_orders.controller.action.list_order_products:
+        arguments:
+            - "@tavy315_sylius_orders.context.order"
+            - "@tavy315_sylius_orders.repository.product"
+            - "@twig"
+            - "@sylius.context.shopper"
+        class: Tavy315\SyliusOrdersPlugin\Controller\Action\ListOrderProductsAction
+        tags:
+            - { name: controller.service_arguments }
