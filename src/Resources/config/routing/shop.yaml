@@ -8,7 +8,7 @@ tavy315_sylius_orders_shop_account_order_index:
             template: "@Tavy315SyliusOrdersPlugin/Account/CustomerOrder/Grid/index.html.twig"
             grid: tavy315_sylius_orders_shop_account_order
 
-tavy315_sylius_orders_shop_account_order_products:
+tavy315_sylius_orders_shop_account_order_show:
     path: /{document}
     methods: [GET]
     defaults:

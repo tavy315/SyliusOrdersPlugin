@@ -1,0 +1,5 @@
+<div class="ui five column stackable grid" id="order-products">
+    {% for product in products %}
+        {% include '@Tavy315SyliusOrdersPlugin/Account/CustomerOrder/Grid/_product.html.twig' with {'product': product} %}
+    {% endfor %}
+</div>

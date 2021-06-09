@@ -4,34 +4,24 @@ declare(strict_types=1);
 
 namespace Tavy315\SyliusOrdersPlugin\Controller\Action;
 
-use Sylius\Component\Core\Context\ShopperContextInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tavy315\SyliusOrdersPlugin\Context\OrderContextInterface;
-use Tavy315\SyliusOrdersPlugin\Entity\CustomerOrderInterface;
-use Tavy315\SyliusOrdersPlugin\Entity\CustomerOrderProduct;
-use Tavy315\SyliusOrdersPlugin\Repository\ProductRepositoryInterface;
 use Twig\Environment;
 
 final class ListOrderProductsAction
 {
     private OrderContextInterface $orderContext;
 
-    private ProductRepositoryInterface $productRepository;
-
-    private ShopperContextInterface $shopperContext;
+    private ?int $productLimit;
 
     private Environment $twig;
 
-    public function __construct(
-        OrderContextInterface $orderContext,
-        ProductRepositoryInterface $productRepository,
-        Environment $twig,
-        ShopperContextInterface $shopperContext
-    ) {
+    public function __construct(OrderContextInterface $orderContext, Environment $twig, ?int $productLimit)
+    {
         $this->orderContext = $orderContext;
-        $this->productRepository = $productRepository;
-        $this->shopperContext = $shopperContext;
+        $this->productLimit = $productLimit;
         $this->twig = $twig;
     }
 
@@ -39,36 +29,18 @@ final class ListOrderProductsAction
     {
         $order = $this->orderContext->getCustomerOrder($document);
 
-        return new Response($this->twig->render('@Tavy315SyliusOrdersPlugin/Account/CustomerOrder/Grid/products.html.twig', [
-            'order'    => $order,
-            'products' => $this->getProducts($order),
-        ]));
-    }
-
-    /**
-     * @return array<CustomerOrderProduct>
-     */
-    private function getProducts(CustomerOrderInterface $order): array
-    {
-        $products = [];
-
-        foreach ($order->getProducts() as $product) {
-            $customerOrderProduct = CustomerOrderProduct::fromArray($product);
-
-            if ($product['no'] !== '') {
-                $customerOrderProduct->product = $this->productRepository
-                    ->createShopListQueryBuilder(
-                        $this->shopperContext->getChannel(),
-                        $this->shopperContext->getLocaleCode(),
-                        [ $product['no'] ]
-                    )
-                    ->getQuery()
-                    ->getOneOrNullResult();
-            }
-
-            $products[] = $customerOrderProduct;
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse([
+                'html' => $this->twig->render('@Tavy315SyliusOrdersPlugin/Account/CustomerOrder/Grid/_products.html.twig', [
+                    'order'    => $order,
+                    'products' => $this->orderContext->getQuoteProducts($order),
+                ]),
+            ]);
         }
 
-        return $products;
+        return new Response($this->twig->render('@Tavy315SyliusOrdersPlugin/Account/CustomerOrder/Grid/show.html.twig', [
+            'order'    => $order,
+            'products' => $this->orderContext->getQuoteProducts($order, $this->productLimit),
+        ]));
     }
 }
