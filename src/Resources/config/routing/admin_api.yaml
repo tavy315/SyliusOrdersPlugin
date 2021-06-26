@@ -6,7 +6,7 @@ tavy315_sylius_orders_admin_api_customer_order:
         form: Tavy315\SyliusOrdersPlugin\Form\Type\CustomerOrderType
         grid: tavy315_sylius_orders_admin_customer_order
         identifier: documentNo
-        only: [create, update]
+        only: [create, delete, update]
         path: 'customers/{customer}/orders'
         section: admin_api
         serialization_version: $version
@@ -17,6 +17,19 @@ tavy315_sylius_orders_admin_api_customer_order:
                     documentNo: $documentNo
     type: sylius.resource_api
 
+tavy315_sylius_orders_admin_api_customer_order_delete:
+    path: /customers/{customer}/orders/{documentNo}
+    methods: [ DELETE ]
+    defaults:
+        _controller: "tavy315_sylius_orders.controller.customer_order:deleteAction"
+        _sylius:
+            csrf_protection: false
+            repository:
+                method: findOneByCustomerAndDocument
+                arguments:
+                    - expr:service('sylius.repository.customer').findOneById($customer)
+                    - $documentNo
+
 tavy315_sylius_orders_admin_api_customer_order_update:
     path: /customers/{customer}/orders/{documentNo}
     methods: [ PATCH, PUT ]
@@ -26,13 +39,12 @@ tavy315_sylius_orders_admin_api_customer_order_update:
             criteria:
                 customer: $customer
                 documentNo: $documentNo
-            factory:
-                method: createForCustomerAndDocument
-                arguments:
-                    - expr:service('sylius.repository.customer').findOneById($customer)
-                    - $documentNo
+            form: Tavy315\SyliusOrdersPlugin\Form\Type\CustomerOrderType
+            permission: false
             repository:
                 method: findOneByCustomerAndDocument
                 arguments:
                     - expr:service('sylius.repository.customer').findOneById($customer)
                     - $documentNo
+            serialization_groups: [ Default, Detailed ]
+            serialization_version: $version
