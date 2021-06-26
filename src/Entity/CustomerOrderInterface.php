@@ -31,9 +31,9 @@ interface CustomerOrderInterface extends ResourceInterface
      */
     public function setProducts(array $products): void;
 
-    public function getTotalAmount(): int;
+    public function getTotalAmount();
 
-    public function setTotalAmount(int $totalAmount): void;
+    public function setTotalAmount($totalAmount): void;
 
     public function getUrl(): ?string;
 

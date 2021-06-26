@@ -88,12 +88,12 @@ class CustomerOrder implements CustomerOrderInterface
         $this->products = $products;
     }
 
-    public function getTotalAmount(): int
+    public function getTotalAmount()
     {
         return $this->totalAmount;
     }
 
-    public function setTotalAmount(int $totalAmount): void
+    public function setTotalAmount($totalAmount): void
     {
         $this->totalAmount = $totalAmount;
     }
