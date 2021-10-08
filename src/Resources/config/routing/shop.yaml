@@ -2,7 +2,7 @@ tavy315_sylius_orders_shop_account_order_index:
     path: /
     methods: [GET]
     defaults:
-        _controller: tavy315_sylius_orders.controller.customer_order:indexAction
+        _controller: tavy315_sylius_orders.controller.customer_order::indexAction
         _sylius:
             section: shop_account
             template: "@Tavy315SyliusOrdersPlugin/Account/CustomerOrder/Grid/index.html.twig"

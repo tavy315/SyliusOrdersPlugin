@@ -21,7 +21,7 @@ tavy315_sylius_orders_admin_api_customer_order_delete:
     path: /customers/{customer}/orders/{documentNo}
     methods: [ DELETE ]
     defaults:
-        _controller: "tavy315_sylius_orders.controller.customer_order:deleteAction"
+        _controller: "tavy315_sylius_orders.controller.customer_order::deleteAction"
         _sylius:
             csrf_protection: false
             repository:
@@ -34,7 +34,7 @@ tavy315_sylius_orders_admin_api_customer_order_update:
     path: /customers/{customer}/orders/{documentNo}
     methods: [ PATCH, PUT ]
     defaults:
-        _controller: "tavy315_sylius_orders.controller.customer_order:updateAction"
+        _controller: "tavy315_sylius_orders.controller.customer_order::updateAction"
         _sylius:
             criteria:
                 customer: $customer
